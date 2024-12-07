@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: phrase_similarity_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/phrases_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13.3
+    container_name: phrase_similarity_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: phrases_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
